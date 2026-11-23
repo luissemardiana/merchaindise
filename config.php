@@ -56,7 +56,7 @@ if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'track.php
 
 if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-proof.php' && !defined('TRIWEAR_PAYMENT_RENDER')) {
     define('TRIWEAR_PAYMENT_RENDER', true);
-    require __DIR__ . '/includes/payment-render.php';
+    require __DIR__ . '/includes/payment-render-v2.php';
     exit;
 }
 
