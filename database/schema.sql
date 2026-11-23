@@ -21,7 +21,7 @@ CREATE TABLE payments (id INT AUTO_INCREMENT PRIMARY KEY, order_id INT NOT NULL,
 CREATE TABLE custom_orders (id INT AUTO_INCREMENT PRIMARY KEY, category_key VARCHAR(20) NOT NULL, customer_name VARCHAR(150), whatsapp VARCHAR(30), quantity INT, details TEXT, status VARCHAR(40) DEFAULT 'consultation', created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE site_settings (setting_key VARCHAR(80) PRIMARY KEY, setting_value TEXT NOT NULL);
 
-INSERT INTO admins(name,email,password_hash) VALUES ('TRIWEAR Admin','admin@triwear.test','$2y$10$Z7WTNnfmoshz7hDeQr62LeAHzMBwfMX9.UwCWY3qd/Z42ve7RI1yS');
+INSERT INTO admins(name,email,password_hash) VALUES ('TRIWEAR Admin','admin@triwear.test','$2y$10$r3QYv.biNKg.v91GTub0PuoVb0Ou72rS.XLW8AJBpDyHqPwlwDSfi');
 INSERT INTO categories(slug,name,description,image_url) VALUES
 ('jaket','Jaket','Silhouette kampus yang terstruktur dan berkarakter.','https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=85'),('batik','Batik','Warisan motif, disusun untuk generasi berikutnya.','https://images.unsplash.com/photo-1598032895397-b9472444bf93?auto=format&fit=crop&w=900&q=85'),('kaos','Kaos','Essential everyday dengan sikap kolektif.','https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85');
 INSERT INTO sizes(code,display_name,sort_order) VALUES ('P_LENGTH','P · Panjang',1),('L_WIDTH','L · Lebar',2),('S','S',3),('M','M',4),('L','L',5),('XL','XL',6),('XXL','XXL',7),('XXXL','XXXL',8);

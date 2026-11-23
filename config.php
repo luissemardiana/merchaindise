@@ -77,3 +77,9 @@ if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-c
     require __DIR__ . '/includes/payment-confirmation-render.php';
     exit;
 }
+
+if (PHP_SAPI !== 'cli' && str_ends_with(str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? ''), '/admin/login.php') && !defined('TRIWEAR_ADMIN_LOGIN_RENDER')) {
+    define('TRIWEAR_ADMIN_LOGIN_RENDER', true);
+    require __DIR__ . '/includes/admin-login-render.php';
+    exit;
+}
