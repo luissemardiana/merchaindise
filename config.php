@@ -71,3 +71,9 @@ if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'confirmat
     require __DIR__ . '/includes/confirmation-render.php';
     exit;
 }
+
+if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-confirmation.php' && !defined('TRIWEAR_PAYMENT_CONFIRMATION_RENDER')) {
+    define('TRIWEAR_PAYMENT_CONFIRMATION_RENDER', true);
+    require __DIR__ . '/includes/payment-confirmation-render.php';
+    exit;
+}

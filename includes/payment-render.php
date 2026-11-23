@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             db()->prepare('INSERT INTO payments(order_id,amount,proof_path) VALUES(?,?,?)')->execute([$order['id'], $order['total'], 'uploads/payment-proofs/' . $name]);
             db()->prepare("UPDATE orders SET payment_status='waiting_verification' WHERE id=?")->execute([$order['id']]);
-            flash('success', 'Bukti pembayaran terkirim dan sedang diverifikasi admin.');
-            redirect('track.php');
+            $_SESSION['payment_confirmation_order'] = (int) $order['id'];
+            redirect('payment-confirmation.php');
         }
     }
 }
