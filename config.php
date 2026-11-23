@@ -83,3 +83,9 @@ if (PHP_SAPI !== 'cli' && str_ends_with(str_replace('\\', '/', $_SERVER['SCRIPT_
     require __DIR__ . '/includes/admin-login-render.php';
     exit;
 }
+
+if (PHP_SAPI !== 'cli' && str_ends_with(str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? ''), '/admin/orders.php') && !defined('TRIWEAR_ADMIN_ORDERS_RENDER')) {
+    define('TRIWEAR_ADMIN_ORDERS_RENDER', true);
+    require __DIR__ . '/includes/admin-orders-render.php';
+    exit;
+}
