@@ -1,0 +1,42 @@
+services:
+  app:
+    build: .
+    container_name: triwear-app
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/var/www/html/uploads
+    networks:
+      - default
+      - caddy
+
+  db:
+    image: mariadb:10.11
+    container_name: triwear-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASS}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS}
+    volumes:
+      - triwear-db-data:/var/lib/mysql
+      - ./database/triwear.sql:/docker-entrypoint-initdb.d/01-triwear.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - default
+
+volumes:
+  triwear-db-data:
+
+networks:
+  caddy:
+    external: true
+    name: n8n_default

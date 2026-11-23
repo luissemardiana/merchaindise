@@ -8,10 +8,14 @@ $customOrderUrl = url('custom-order.php');
 require __DIR__ . '/header.php';
 ?>
 <link rel="stylesheet" href="<?= url('assets/css/redesign.css') ?>">
+<link rel="stylesheet" href="<?= url('assets/css/home-cleanup.css') ?>">
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const heroImage = document.querySelector('.new-hero-art img');
   if (heroImage) { heroImage.src = '<?= url('assets/images/hmp-ugm-work-jacket.png') ?>'; heroImage.alt = 'Jaket HMP UGM'; }
+  const heroSection = document.querySelector('.new-hero');
+  if (heroSection) heroSection.classList.add('hero-text-only');
+  document.querySelector('.new-hero-art')?.remove();
   document.querySelector('.new-stamp')?.remove();
   const heroNote = document.querySelector('.new-note');
   if (heroNote) heroNote.textContent = 'Crafted for campus life';

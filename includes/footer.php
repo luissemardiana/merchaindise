@@ -1,1 +1,1 @@
-<footer><div><a class="brand" href="<?= url() ?>">TRI<span>WEAR</span></a><p>Merchandise kampus yang dirancang sebagai pernyataan identitas.</p></div><div><strong>Need help?</strong><a href="<?= url('custom-order.php') ?>">Custom Order</a><a href="<?= url('track.php') ?>">Track order</a><a target="_blank" rel="noopener" href="https://wa.me/<?= e(setting('whatsapp_number')) ?>">WhatsApp</a></div></footer><script src="<?= url('assets/js/app.js') ?>"></script></body></html>
+<script src="<?= url('assets/js/app.js') ?>"></script></body></html>

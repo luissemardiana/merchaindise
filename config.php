@@ -49,3 +49,15 @@ function is_admin(): bool { return !empty($_SESSION['admin_id']); }
 function require_admin(): void { if (!is_admin()) redirect('admin/login.php'); }
 function cart_count(): int { return array_sum(array_map(fn($item) => (int)$item['quantity'], $_SESSION['cart'] ?? [])); }
 function money(float $amount): string { return 'Rp ' . number_format($amount, 0, ',', '.'); }
+
+if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'track.php' && !defined('TRIWEAR_TRACK_RENDER')) {
+    define('TRIWEAR_TRACK_RENDER', true);
+    require __DIR__ . '/includes/track-render.php';
+    exit;
+}
+
+if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-proof.php' && !defined('TRIWEAR_PAYMENT_RENDER')) {
+    define('TRIWEAR_PAYMENT_RENDER', true);
+    require __DIR__ . '/includes/payment-render.php';
+    exit;
+}
