@@ -51,9 +51,7 @@ function cart_count(): int { return array_sum(array_map(fn($item) => (int)$item[
 function money(float $amount): string { return 'Rp ' . number_format($amount, 0, ',', '.'); }
 
 if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'track.php' && !defined('TRIWEAR_TRACK_RENDER')) {
-    define('TRIWEAR_TRACK_RENDER', true);
-    require __DIR__ . '/includes/track-render.php';
-    exit;
+    redirect('index.php');
 }
 
 if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-proof.php' && !defined('TRIWEAR_PAYMENT_RENDER')) {
@@ -65,5 +63,11 @@ if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-p
 if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'checkout.php' && !defined('TRIWEAR_CHECKOUT_RENDER')) {
     define('TRIWEAR_CHECKOUT_RENDER', true);
     require __DIR__ . '/includes/checkout-render.php';
+    exit;
+}
+
+if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'confirmation.php' && !defined('TRIWEAR_CONFIRMATION_RENDER')) {
+    define('TRIWEAR_CONFIRMATION_RENDER', true);
+    require __DIR__ . '/includes/confirmation-render.php';
     exit;
 }
