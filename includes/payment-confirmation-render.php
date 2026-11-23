@@ -7,6 +7,11 @@ $orderStatement->execute([$orderId]);
 $order = $orderStatement->fetch();
 if (!$order) redirect('index.php');
 
+$paymentStatement = db()->prepare('SELECT proof_path FROM payments WHERE order_id=? ORDER BY submitted_at DESC, id DESC LIMIT 1');
+$paymentStatement->execute([$orderId]);
+$proofPath = (string) $paymentStatement->fetchColumn();
+$proofUrl = $proofPath ? url($proofPath) : '';
+
 $itemsStatement = db()->prepare('SELECT product_name, quantity, selected_size_name, selected_variant, selected_motif FROM order_items WHERE order_id=?');
 $itemsStatement->execute([$orderId]);
 $items = $itemsStatement->fetchAll();
@@ -20,7 +25,8 @@ foreach ($items as $item) {
 
 $rawAdminNumber = preg_replace('/\D/', '', setting('whatsapp_number'));
 $adminNumber = str_starts_with($rawAdminNumber, '0') ? '62' . substr($rawAdminNumber, 1) : $rawAdminNumber;
-$message = "Halo Admin TRIWEAR, saya sudah mengirim bukti pembayaran untuk pesanan berikut.\n\nNomor pesanan: {$order['order_number']}\nNama: {$order['full_name']}\n\nRincian pesanan:\n" . implode("\n", $lines) . "\n\nTotal: " . money((float) $order['total']) . "\n\nMohon konfirmasi dan informasi proses selanjutnya. Terima kasih.";
+$proofLine = $proofUrl ? "\n\nBukti pembayaran: {$proofUrl}" : '';
+$message = "Halo Admin TRIWEAR, saya sudah mengirim bukti pembayaran untuk pesanan berikut.\n\nNomor pesanan: {$order['order_number']}\nNama: {$order['full_name']}\n\nRincian pesanan:\n" . implode("\n", $lines) . "\n\nTotal: " . money((float) $order['total']) . $proofLine . "\n\nMohon konfirmasi dan informasi proses selanjutnya. Terima kasih.";
 $whatsappUrl = 'https://wa.me/' . rawurlencode($adminNumber) . '?text=' . rawurlencode($message);
 $questionUrl = 'https://wa.me/' . rawurlencode($adminNumber) . '?text=' . rawurlencode("Halo Admin TRIWEAR, saya ingin menanyakan pesanan {$order['order_number']}.\n\nTerima kasih.");
 $alreadyConfirmed = !empty($order['admin_confirmed_at']);
