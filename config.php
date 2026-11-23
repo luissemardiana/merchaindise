@@ -61,3 +61,9 @@ if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'payment-p
     require __DIR__ . '/includes/payment-render.php';
     exit;
 }
+
+if (PHP_SAPI !== 'cli' && basename($_SERVER['SCRIPT_NAME'] ?? '') === 'checkout.php' && !defined('TRIWEAR_CHECKOUT_RENDER')) {
+    define('TRIWEAR_CHECKOUT_RENDER', true);
+    require __DIR__ . '/includes/checkout-render.php';
+    exit;
+}
