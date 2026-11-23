@@ -43,7 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $orderId = (int) $pdo->lastInsertId();
                 $orderIds[] = $orderId;
                 $line = $pdo->prepare('INSERT INTO order_items(order_id,product_id,product_name,category_name,unit_price,quantity,selected_size_code,selected_size_name,selected_variant,selected_motif) VALUES(?,?,?,?,?,?,?,?,?,?)');
+                $productStock = $pdo->prepare('UPDATE products SET stock=stock-? WHERE id=? AND stock>=?');
+                $sizeStock = $pdo->prepare('UPDATE product_sizes ps JOIN sizes s ON s.id=ps.size_id SET ps.stock=ps.stock-? WHERE ps.product_id=? AND s.code=? AND ps.stock>=?');
                 foreach ($group['items'] as $item) {
+                    $quantity = (int) $item['quantity'];
+                    $productStock->execute([$quantity, $item['product_id'], $quantity]);
+                    if ($productStock->rowCount() !== 1) throw new RuntimeException('Stok produk sudah tidak mencukupi.');
+                    $sizeCode = $item['size_code'] === '4XL' ? 'XXXL' : $item['size_code'];
+                    $sizeStock->execute([$quantity, $item['product_id'], $sizeCode, $quantity]);
+                    if ($sizeStock->rowCount() !== 1) throw new RuntimeException('Stok ukuran yang dipilih sudah tidak mencukupi.');
                     $line->execute([$orderId, $item['product_id'], $item['name'], $group['name'], $item['price'], $item['quantity'], $item['size_code'], $item['size_name'], $item['variant'] ?: null, $item['motif'] ?: null]);
                 }
             }
@@ -53,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redirect('confirmation.php');
         } catch (Throwable $e) {
             if (db()->inTransaction()) db()->rollBack();
-            $error = 'Pesanan belum dapat disimpan. Silakan coba lagi.';
+            $error = $e instanceof RuntimeException ? $e->getMessage() : 'Pesanan belum dapat disimpan. Silakan coba lagi.';
         }
     }
 }
